@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <style type="text/css">
+                    body {
+                        background-image:url(fondo.jpg);
+                    }
+                    .value {
+                        font-weight: bold;
+                    }
+                    .ui-datatable .ui-datatable-header {
+                        text-align: right !important;
+                    }
+
+                    .ui-button-text-only .ui-button-text {
+                        padding: 0.3em 0.4em;
+                    }
+
+                    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                        visibility: hidden;
+                    }
+
+                    .ui-filter-column .ui-column-customfilter .custom-filter {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .year-spinner input {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                </style>
+                <title>Lista factura</title>         
+            </f:facet>
+        </h:head>
+        <h:body>  
+            <h:form id="formTitulo">
+                <h:form>
+                    <img src="img/name.jpg" style="width: 100%; height: 150px;" />
+                    <p:panelGrid  columns="8"  columnClasses="label,value" style="width: 100%" >
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaProducto"  value="Alta Producto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCliente"  value="Alta Cliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCategoria"  value="Alta Categoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcategoria"  value="Lista Categoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGproducto"  value="Lista Producto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcliente"  value="Lista Cliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGfacturas"  value="Lista Factura" style="width:100%; color: greenyellow;"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGdetalle"  value="Lista Detalle" style="width:100%"/>
+                        </p:panel>
+                         <p:panel style="width: 100%">
+                            <p:button outcome="listaGaCategoria"  value="Lista aCategoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaProducto"  value="Lista aProducto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaClientes"  value="Lista aCliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaFactura"  value="Lista aFactura" style="width:100%"/>
+                        </p:panel>
+                        
+                        <p:panel style="width: 100%">
+                            <p:button outcome="stock"  value="Stock" style="width:100%"/>
+                        </p:panel>
+                    </p:panelGrid>
+                </h:form>
+            </h:form>  
+            <h:form  id="formMostrar">
+                <p:growl id="growl" showDetail="true" sticky="true" /> 
+                <p:dataTable var="factura" value="#{facturaBean.lista}" rows="10" widgetVar="prodTable" emptyMessage="No se encontraron categorias con los criterios dados"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <f:facet name="header">
+                        <div align="center">
+                            Lista General Factura
+                        </div>
+                        <p:outputPanel>
+                            <h:outputText value="Buscar en todos los campos:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('prodTable').filter()" style="width:150px" placeholder="Inserte palabra clave"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{factura.numFactura}" headerText="num"  filterMatchMode="contains" width="10%">
+                        <h:outputText value="#{factura.numFactura}" />
+                    </p:column>
+                    <p:column filterBy="#{factura.cliente.idCliente}" headerText="Cliente"  filterMatchMode="contains">
+                        <h:outputText value="#{factura.cliente.idCliente}" />
+                    </p:column>
+                    <p:column filterBy="#{factura.total}" headerText="Total"  filterMatchMode="contains">
+                        <h:outputText value="#{factura.total}" />
+                    </p:column>
+                    <p:column filterBy="#{factura.fecha}" headerText="Fecha"  filterMatchMode="contains">
+                        <h:outputText value="#{factura.fecha}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
+

@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Tienda Online</title>
+        <style type="text/css">
+            body {
+                background-image:url(fondo.jpg);
+            }
+            .value {
+                font-weight: bold;
+            }
+            .preformatted {
+                white-space: pre-wrap;
+            }
+            ul.menu {
+                list-style: none;
+                padding: 0;
+            }
+
+            ul.menu > li {
+                border-left: solid 1px rgba(255, 255, 255, 0.15);
+                display: inline-block;
+                line-height: 1;
+                margin-left: 1.5em;
+                padding: 0 0 0 1.5em;
+            }
+
+            ul.menu > li:first-child {
+                border-left: 0;
+                margin: 0;
+                padding-left: 0;
+            }
+
+            @media screen and (max-width: 480px) {
+
+                ul.menu > li {
+                    border-left: 0;
+                    display: block;
+                    line-height: inherit;
+                    margin: 0.5em 0 0 0;
+                    padding-left: 0;
+                }
+
+            }
+            
+            
+        </style>
+    </h:head>
+    <h:body>
+        <!-- Titulo y menu principal-->
+        <h:form id="formTitulo">
+            <h:form>
+                <img src="img/name.jpg" style="width: 100%; height: 150px;" />
+                <p:panelGrid  columns="5"  columnClasses="label,value" style="width: 100%; border-style: hidden">
+                    <p:panel style="width: 100%; border-style: hidden">
+                        <h:outputText value="Categoria: "/>
+                        <p:selectOneMenu id="txt2" binding="#{input2}" style="width:150px" value="#{productoBean.selectCategoria}" label="Descuento">
+                            <f:selectItem itemLabel="Todos"/>
+                            <f:selectItems value="#{productoBean.listCategoria}"/>
+                            <p:ajax event="valueChange" update=":form:prod"  immediate="true"/>
+                        </p:selectOneMenu>
+                    </p:panel>
+                    <p:panel style="width: 100%; border-style: hidden">
+                        <h:outputText value="Buscar articulo: " />
+                        <p:inputText id="txt1" binding="#{input1}" placeholder="Inserte palabra clave" >
+                            <p:ajax event="keyup" update=":form:prod"  immediate="true" listener="#{productoBean.setInombre(input1.value)}"/>
+                        </p:inputText>
+                    </p:panel>
+                    <p:panel style="width: 100%; border-style: hidden">
+                        <!--<p:commandButton id="btnUsuario" style="width:100%" title="Usuario" value="Usuario"/>-->
+                        <p:commandButton rendered="#{clienteBean.online == false}" 
+                                         id="btnLogin" oncomplete="PF('dialogLogin').show(); #{clienteBean.cliente1 = null}" 
+                                                                                                        update=":fromCarrito" title="Login" value="Login"/>
+                        <p:commandButton rendered="#{clienteBean.online == true}" 
+                                         id="btnUnLogin" oncomplete="#{clienteBean.online = false})"  update=":fromCarrito" title="Logout" value="Logout"/>
+                    </p:panel>
+                    <p:panel style="width: 100%; border-style: hidden">
+                        <p:button outcome="altaCliente_1"  value="Registrarse" style="width:100%"/>
+                    </p:panel>
+                    <p:panel style="width: 100%; border-style: hidden">
+                        <p:commandButton id="btnCarrito"  style="width:100% " oncomplete="PF('dialogClienteCreate').show()" title="Carrito" value="Carrito"/>
+                    </p:panel>  
+                </p:panelGrid>
+            </h:form>
+        </h:form>
+        
+        <!-- Cuadricula de productos-->
+        <h:form id="form">
+            <p:dataGrid  var="producto" value="#{productoBean.buscar}" columns="4" 
+                         rows="12" paginator="true" id="prod" style="align-items: center"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="6,12,16" >
+                <f:facet name="header">
+                    <div align="center">
+                        Articulos en venta
+                    </div>
+                </f:facet>
+                <p:panel rendered="#{producto.stock > 0}" header="#{producto.nombre}" style="text-align:center" >
+                    <h:panelGrid columns="1" style="width:100%; height: 300px;" >
+                        <div>
+                            <p:commandLink update=":form:prodDetail" oncomplete="PF('prodDialog').show()" title="Mostrar detalles">       
+                                <h:graphicImage rendered="#{producto.image != null}" value="/img/#{producto.image}" style="width: 150px; height: 150px;"/> 
+                                <h:graphicImage rendered="#{producto.image == null}" value="/img/carrito.jpeg" style="width: 150px; height: 150px;"/> 
+                                <f:setPropertyActionListener
+                                    target="#{productoBean.selectProducto}"
+                                    value="#{producto}"/>
+                            </p:commandLink>
+                        </div>
+                        <div>
+                            <h:outputText value = "#{producto.precio}">
+                                <f:convertNumber currencySymbol="MXN $ " type="currency"/>
+                            </h:outputText>
+                        </div>
+                        <div>
+                            <h:outputText rendered="#{producto.descuento > 0}" 
+                                          value="#{producto.precio-(producto.precio/100 * producto.descuento)}" style="color: green">
+                                <f:convertNumber currencySymbol="Promoción MXN $ " type="currency"/>
+                            </h:outputText>
+                        </div>
+                        <div>
+                            <form>
+                                <p:commandButton value="Añadir al carro" actionListener="#{cartBean.addtoCart(producto, 1)}" 
+                                                 update = ":fromCarrito, :fromVenta, messages"/>
+                                <p:growl id="messages" life="3000"/> 
+                            </form>
+                        </div>
+                    </h:panelGrid>
+                </p:panel>
+            </p:dataGrid>
+            <p:dialog header="Articulo Info" widgetVar="prodDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="500px">
+                <p:outputPanel id="prodDetail" style="text-align:center;">
+                    <div align="center">
+                        <h:graphicImage rendered="#{productoBean.selectProducto.image != null}"  
+                                        value="/img/#{productoBean.selectProducto.image}" style="width: 250px; height: 250px;" /> 
+                        <h:graphicImage rendered="#{productoBean.selectProducto.image == null}"  
+                                        value="/img/carrito.jpeg" style="width: 250px; height: 250px;" /> 
+                    </div>
+                    <p:panelGrid  columns="2" rendered="#{not empty productoBean.selectProducto}" columnClasses="label,value" style="width:100%">
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{productoBean.selectProducto.idProducto}" />
+                        <h:outputText value="Nombre" />
+                        <h:outputText value="#{productoBean.selectProducto.nombre}" />
+                        <h:outputText value="Descripcion:"/>
+                        <h:outputText value="#{productoBean.selectProducto.descripcion}" />
+                        <h:outputText value="Precio" />
+                        <h:outputText value="#{productoBean.selectProducto.precio}">
+                            <f:convertNumber currencySymbol="MXN $ " type="currency"/>
+                        </h:outputText>
+                        <h:outputText value="Stock" />
+                        <h:outputText value="#{productoBean.selectProducto.stock}" />
+                        <h:outputText value="Descuento" />
+                        <h:outputText value="#{productoBean.selectProducto.descuento}%"  style="color: green;"/>
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+        
+        <!-- Carrito de compras-->
+        <h:form id="fromCarrito">
+            <p:dialog header="Carrito de compras" widgetVar="dialogClienteCreate" modal="true" showEffect="fade" hideEffect="fade" resizable="false" id="dlgClienteCreate" minHeight="500" width="800">
+                <p:dataTable id="basicDT" var="i" value="#{cartBean.cart}"
+                             emptyMessage="No se encontraron productos"
+                             paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:messages />
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{i.producto.nombre}" />
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <h:outputText value="#{i.producto.precio-(i.producto.precio/100 * i.producto.descuento)}" />
+                    </p:column>
+                    <p:column headerText="Cantidad">
+                        <h:outputText value="#{i.cantidad}" />
+                    </p:column>
+                    <p:column headerText="Accion">
+                        <p:commandButton value="Eliminar"
+                                         onclick="PF('dlgeliminar').show();">
+                            <f:setPropertyActionListener
+                                target="#{cartBean.selectedItem}"
+                                value="#{i}"/>
+                        </p:commandButton>
+                        <p:growl id="messages" life="3000"/> 
+                    </p:column>
+                </p:dataTable>
+                <h:outputLabel for="total" value="Total:" />
+                <h:outputText value="$#{cartBean.total}" />
+                <div align="right">
+                    <p:commandButton id="btnVentas" oncomplete="PF('dialogVenta').show()" title="Ventas" value="Comprar">
+                        <f:setPropertyActionListener
+                            target="#{facturaBean.total}"
+                            value="#{cartBean.total}"/>
+                    </p:commandButton>
+                    <p:commandButton oncomplete="PF('dialogClienteCreate').hide()" value="Cerrar"/>
+                </div>
+            </p:dialog>
+        </h:form>
+        
+        <!-- Dialogo confirmar eliminar del carrito-->
+        <p:dialog id="dlg2" header="Eliminar Producto" 
+                  showEffect="fade" hideEffect="fade"
+                  widgetVar="dlgeliminar" modal="true" 
+                  resizable="false" minWidth="200">
+            <h:form id="formEliminar">
+                <p:outputLabel value="¿Desea eliminar el registro?" />
+                <p:commandButton 
+                    actionListener="#{cartBean.remove()}" 
+                    value="Si" update=":fromCarrito, :fromVenta, messages"
+                    onclick="PF('dlgeliminar').hide();"/>
+                <p:commandButton  value="No" 
+                                  onclick="PF('dlg2').hide();"/>
+                <p:growl id="messages" life="3000"/> 
+            </h:form>
+        </p:dialog>
+        
+        <!-- Completar venta-->
+        <h:form id="fromVenta">
+            <p:dialog header="Completar Venta" widgetVar="dialogVenta" modal="true" showEffect="fade" hideEffect="fade" resizable="false" id="dlgCreate" width="800px" minHeight="500">
+                <h:form>
+                    <p:panel id="DetalleCliente" header="Detalle Cliente">
+                        <h:panelGrid columns="4">
+                            <ui:param name="clienteVenta" value="#{clienteBean.cliente1}" />
+                            <h:outputLabel for="nombre" value="Cliente:" />
+                            <p:inputText id="nombre" value="#{clienteBean.cliente1.nombre}" required="true" label="nombre" readonly="true"/>
+                            <h:outputLabel for="email" value="Email:" />
+                            <p:inputText id="email" value="#{clienteBean.cliente1.email}" required="true" label="email" readonly="true"/>
+                            <h:outputLabel for="direccion" value="Direccion:" />
+                            <p:inputText id="direccion" value="#{clienteBean.cliente1.direccion}" required="true" label="direccion"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+                <h:outputText value="#{i}"/>
+                <p:dataTable id="basicDT2" var="i2" value="#{cartBean.cart}"
+                             emptyMessage="No se encontraron productos"
+                             paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{i2.producto.nombre}" />
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <h:outputText value="#{i2.producto.precio-(i2.producto.precio/100 * i2.producto.descuento)}" />
+                    </p:column>
+                    <p:column headerText="Cantidad">
+                        <h:outputText value="#{i2.cantidad}" />
+                    </p:column>
+                </p:dataTable>
+                <div align="center">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="total" value="Total" />
+                        <p:inputText value="$#{cartBean.total}" readonly="true"/>
+                        <ui:param name="totalVenta" value="#{cartBean.total}" />
+                        <ui:param name="carroC" value="#{cartBean}" />
+                    </h:panelGrid>
+                </div>
+                <div align="right">
+                    <p:commandButton value="Enviar" action="#{facturaBean.insertar(totalVenta, clienteVenta, carroC)}"  
+                                     update="@form, :fromCarrito, :fromVenta, messages" oncomplete="#{productoBean.buscar}; PF('dialogVenta').hide()"/>
+                    <p:commandButton oncomplete="PF('dialogVenta').hide()" value="Cerrar"/>
+                    <p:growl id="messages" life="3000"/> 
+                </div>
+                <div>
+                    <form action="https://www.sandbox.paypal.com/webscr&#8221;" method="post" id="basicDT" var="i" value="#{cartBean}" >
+                    
+                    <input type="hidden" name="cmd" value="_xclick"/>
+                    <input type="hidden" name="business" value="jnponce-facilitator@udlanet.ec" />
+                    <input type="hidden" name="password" value="12345"/>
+                    <input type="hidden" name="custom" value="1123"/>
+                    <input type="hidden" name="TOKEN" value="EC-7FU52529LA221360D"/>
+                    <input type="hidden" name="tx" value="TransactionID"/>
+                    <input type="hidden" name="item_name" value="Compra My Shop"/>
+                    <input type="hidden" name="amount" value="#{cartBean.total}"/>
+                    <input type="hidden" name="CURRENCY" value="484"/>
+                    <input type="hidden" name="hosted_button_id" value="LAHQRCXWQEZZE"/>
+                    <input type="hidden" name="language" value="es_mx"/>
+                    <input type="image" src="https://www.paypalobjects.com/webstatic/es_MX/mktg/logos-buttons/redesign/btn_11.png?akam_redir=1;" border="0" name="submit" alt="PayPal–Thesafer,easierwaytopayonline!"/>
+                    <input type="hidden" name="return" value="http://localhost:8080/Tienda10/index.xhtml;"/>
+                    <input type="hidden" name="cancel_return" value="http://localhost:8080/Tienda10/index.xhtml;"/>
+                    <input type="hidden" name="notify_url" value="http://localhost:8080/Tienda10/index.xhtml;"/>
+                </form> 
+                </div>
+            </p:dialog>
+        </h:form>
+        
+        
+        <!-- Login de usuario-->
+        <h:form id="fromLogin">
+            <p:dialog header="Login" widgetVar="dialogLogin" modal="true" showEffect="fade" hideEffect="fade" resizable="false" id="dlgLogin" width="500px" minHeight="500">
+                <p:panel header="Login">
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText  value="Usuario " />
+                        <p:inputText value="#{clienteBean.usuario}" required="true"  autocomplete="username" label="Usuario"/>
+
+                        <h:outputText value="Contraseña " />
+                        <p:password value="#{clienteBean.pass}" required="true" autocomplete="current-password" label="Contraseña"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enviar" action="#{clienteBean.login()}"  update="@form, :fromCarrito:btnVentas"  onclick="PF('dlgLogin').hide();"/>
+                </p:panel>
+            </p:dialog>
+        </h:form>    
+        
+        <!-- Parte inferior, Copyright-->
+        <h:form id="formBottom">
+            <h:form>
+                <p:panelGrid  columns="1"  columnClasses="label,value" style="width: 100%; border-style: hidden" >
+                    <p:panel style="width: 100%;">
+                        <ul class="menu" >
+                            <li>Copyright &copy; 2019 My Shop. Todos los derechos reservados.</li>
+                        </ul>
+                    </p:panel>
+                </p:panelGrid>
+            </h:form>
+        </h:form>
+    </h:body>
+</html>

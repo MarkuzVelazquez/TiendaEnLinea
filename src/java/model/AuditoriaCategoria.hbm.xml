@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/05/2019 10:40:31 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.AuditoriaCategoria" table="auditoria_categoria" schema="public" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombreant" type="string">
+            <column name="nombreant" length="45" />
+        </property>
+        <property name="descripcionant" type="string">
+            <column name="descripcionant" length="100" />
+        </property>
+        <property name="nombrenew" type="string">
+            <column name="nombrenew" length="45" />
+        </property>
+        <property name="descripcionnew" type="string">
+            <column name="descripcionnew" length="100" />
+        </property>
+        <property name="usuario" type="string">
+            <column name="usuario" length="45" />
+        </property>
+        <property name="modificado" type="timestamp">
+            <column name="modificado" length="29" />
+        </property>
+        <property name="idCategoria" type="java.lang.Integer">
+            <column name="id_categoria" />
+        </property>
+    </class>
+</hibernate-mapping>

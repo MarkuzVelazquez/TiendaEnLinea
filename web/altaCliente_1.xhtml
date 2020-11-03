@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Alta Cliente</title>
+                <style type="text/css">
+                    body {
+                        background-image:url(./img/fondo.jpg);
+                    }
+                </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <h:form>
+                <p:growl id="growl"/>
+                <p:wizard flowListener="#{clienteBean.onFlowProcess}" nextLabel="Siguiente" backLabel="Atras" >
+                    <p:tab id="idUsuario" title="Cuenta">
+                        <p:panel header="Detalles de cuenta">
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Usuario: " />
+                                <h:inputText value="#{clienteBean.cliente.usuario}" required="true" validator="userValidator" autocomplete="off"  label="Usuario">
+                                </h:inputText>
+                                <h:outputText value="Contraseña: " />
+                                <p:password  value="#{clienteBean.cliente.pass}" required="true" autocomplete="new-password" label="Contraseña"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab id="personal" title="Personal">
+                        <p:panel header="Detalles personales">
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Nombre: " />
+                                <p:inputText value="#{clienteBean.cliente.nombre}" required="true" label="Nombre"/>
+                                <h:outputText value="Apellido Paterno: " />
+                                <p:inputText value="#{clienteBean.cliente.apaterno}" required="true" label="Apellido Paterno"/>                            
+                                <h:outputText value="Apellido Materno: " />
+                                <p:inputText value="#{clienteBean.cliente.amaterno}" required="true" label="Apellido Materno"/>
+                                <h:outputText value="Fecha de nacimiento: " />
+                                <p:calendar value="#{clienteBean.cliente.fechaNacimiento}" required="true" label="Fecha de nacimiento"/>
+                                <h:outputText value="Omitir direccion " />
+                                <h:selectBooleanCheckbox value="#{clienteBean.skip}" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab id="address" title="Dirección">
+                        <p:panel header="Detalles de dirección">
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Calle: " />
+                                <p:inputText value="#{clienteBean.calle}" required="true" label="Calle"/>                          
+                                <h:outputText value="N° Ext: " />
+                                <p:inputText value="#{clienteBean.numExt}" required="true" label="N° Ext"/>
+                                <h:outputText value="N° Int: *" />
+                                <p:inputText value="#{clienteBean.numInt}" />                           
+                                <h:outputText value="Entre calles: *" />
+                                <p:inputText value="#{clienteBean.entreCalles}" />
+                                <h:outputText value="Referencias: " />
+                                <p:inputText value="#{clienteBean.referencias}" required="true" label="Referencias"/>
+                                <h:outputText value="Codigo Postal: " />
+                                <p:inputText value="#{clienteBean.cp}" required="true" label="Codigo Postal"/>
+                                <h:outputText value="Asentamiento: " />
+                                <p:inputText value="#{clienteBean.asentamiento}" required="true" label="Asentamiento"/>
+                                <h:outputText value="Municipio: " />
+                                <p:inputText value="#{clienteBean.municipio}" required="true" label="Municipio"/>
+                                <h:outputText value="Estado: " />
+                                <p:inputText value="#{clienteBean.estado}" required="true" label="Estado"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab id="contact" title="Contacto">
+                        <p:panel header="Información de contacto">
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Email: " />
+                                <p:inputText value="#{clienteBean.cliente.email}" required="true" label="Email"/>
+                                <h:outputText value="Telefono: " />
+                                <p:inputText value="#{clienteBean.telefono}" required="true" label="Telefono"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab id="confirm" title="Confirmación">
+                        <p:panel header="Confirmación">
+                            <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Nombre: " />
+                                    <h:outputText value="#{clienteBean.cliente.nombre}"/>
+                                    <h:outputText value="Apellidos: " />
+                                    <h:outputText value="#{clienteBean.apellidos}"/>
+                                    <h:outputText value="Fecha Nacimiento: " />
+                                    <h:outputText value="#{clienteBean.cliente.fechaNacimiento}"/>
+                                </h:panelGrid>
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Calle: " />
+                                    <h:outputText value="#{clienteBean.calle}"/>
+                                    <h:outputText value="Codigo Postal: " />
+                                    <h:outputText value="#{clienteBean.cp}"/>
+                                    <h:outputText value="Estado: " />
+                                    <h:outputText value="#{clienteBean.estado}"/>
+                                </h:panelGrid>
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Email: " />
+                                    <h:outputText value="#{clienteBean.cliente.email}"/>
+                                    <h:outputText value="Telefono: " />
+                                    <h:outputText value="#{clienteBean.telefono}"/>                                
+                                    <h:outputText />
+                                    <h:outputText />
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <p:commandButton value="Enviar" action="#{clienteBean.insertar()}" update="growl" process="@this"/>
+                        </p:panel>
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+
+        </h:body>
+
+    </f:view>
+</html>
+

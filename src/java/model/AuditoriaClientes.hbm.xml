@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/05/2019 10:40:31 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.AuditoriaClientes" table="auditoria_clientes" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned"></generator>
+        </id>
+        <property name="nomant" type="string">
+            <column name="nomant" length="45" />
+        </property>
+        <property name="apatant" type="string">
+            <column name="apatant" length="45" />
+        </property>
+        <property name="amatant" type="string">
+            <column name="amatant" length="45" />
+        </property>
+        <property name="direccionant" type="string">
+            <column name="direccionant" length="500" />
+        </property>
+        <property name="fenacant" type="date">
+            <column name="fenacant" length="13" />
+        </property>
+        <property name="telefonoant" type="java.lang.Long">
+            <column name="telefonoant" />
+        </property>
+        <property name="emailant" type="string">
+            <column name="emailant" length="100" />
+        </property>
+        <property name="usuarioant" type="string">
+            <column name="usuarioant" length="45" />
+        </property>
+        <property name="passant" type="string">
+            <column name="passant" length="45" />
+        </property>
+        <property name="nomnew" type="string">
+            <column name="nomnew" length="45" />
+        </property>
+        <property name="apatnew" type="string">
+            <column name="apatnew" length="45" />
+        </property>
+        <property name="amatnew" type="string">
+            <column name="amatnew" length="45" />
+        </property>
+        <property name="direccionnew" type="string">
+            <column name="direccionnew" length="500" />
+        </property>
+        <property name="fenacnew" type="date">
+            <column name="fenacnew" length="13" />
+        </property>
+        <property name="telefononew" type="java.lang.Long">
+            <column name="telefononew" />
+        </property>
+        <property name="emailnew" type="string">
+            <column name="emailnew" length="100" />
+        </property>
+        <property name="usuarionew" type="string">
+            <column name="usuarionew" length="45" />
+        </property>
+        <property name="passnew" type="string">
+            <column name="passnew" length="45" />
+        </property>
+        <property name="usuario" type="string">
+            <column name="usuario" length="45" />
+        </property>
+        <property name="modificado" type="timestamp">
+            <column name="modificado" length="29" />
+        </property>
+        <property name="idCliente" type="java.lang.Integer">
+            <column name="id_cliente" />
+        </property>
+    </class>
+</hibernate-mapping>

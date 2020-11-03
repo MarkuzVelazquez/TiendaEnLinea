@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Lista Auditoria Categoria</title>
+                <style type="text/css">
+                    body {
+                        background-image:url(./img/fondo.jpg);
+                    }
+                    .ui-datatable .ui-datatable-header {
+                        text-align: right !important;
+                    }
+
+                    .ui-button-text-only .ui-button-text {
+                        padding: 0.3em 0.4em;
+                    }
+
+                    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                        visibility: hidden;
+                    }
+
+                    .ui-filter-column .ui-column-customfilter .custom-filter {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .year-spinner input {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <h:form id="formTitulo">
+                <h:form>
+                    <img src="img/name.jpg" style="width: 100%; height: 150px;" />
+                    <p:panelGrid  columns="8"  columnClasses="label,value" style="width: 100%" >
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaProducto"  value="Alta Producto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCliente"  value="Alta Cliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCategoria"  value="Alta Categoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcategoria"  value="Lista Categoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGproducto"  value="Lista Producto" style="width:100%;"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcliente"  value="Lista Cliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGfacturas"  value="Lista Factura" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGdetalle"  value="Lista Detalle" style="width:100%;"/>
+                        </p:panel>
+                         <p:panel style="width: 100%">
+                            <p:button outcome="listaGaCategoria"  value="Lista aCategoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaProducto"  value="Lista aProducto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaClientes"  value="Lista aCliente" style="width:100%; color: greenyellow"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaFactura"  value="Lista aFactura" style="width:100%"/>
+                        </p:panel>
+                        
+                        <p:panel style="width: 100%">
+                            <p:button outcome="stock"  value="Stock" style="width:100%"/>
+                        </p:panel>
+                    </p:panelGrid>
+                </h:form>
+            </h:form> 
+            <h:form  id="formMostrar">
+                <p:growl id="growl"/> 
+                <!-- Tabla de factura -->
+                <p:dataTable var="aClientes" value="#{aClientesBean.lista}" rows="10" widgetVar="prodTable" emptyMessage="No se encontraron aCategoria con los criterios dados"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"
+                             scrollable="true" scrollWidth="100%"
+                             >
+                    <f:facet name="header">
+                        <div align="center">
+                            Lista General Categoria
+                        </div>
+                        <p:outputPanel>
+                            <h:outputText value="Buscar en todos los campos:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('prodTable').filter()" style="width:150px" placeholder="Inserte palabra clave"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{aClientes.id}" headerText="Id"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.id}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.nomant}" headerText="NombreAnt" filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.nomant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.apatant}" headerText="ApatAnt"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.apatant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.amatant}" headerText="AmatAnt"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.amatant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.direccionant}" headerText="DireccionAnt"  filterMatchMode="contains" >
+                        <h:outputText value="#{aClientes.direccionant}" /> 
+                    </p:column>
+                    <p:column filterBy="#{aClientes.fenacant}" headerText="fechaNacAnt"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.fenacant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.telefonoant}" headerText="TelefonoAnt"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.telefonoant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.emailant}" headerText="EmailAnt"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.emailant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.usuarioant}" headerText="UsuarioAnt"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.usuarioant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.passant}" headerText="PassAnt"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.passant}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.nomnew}" headerText="NombreNew" filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.nomnew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.apatnew}" headerText="ApatNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.apatnew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.amatnew}" headerText="AmatNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.amatnew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.direccionnew}" headerText="DireccionNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.direccionnew}" /> 
+                    </p:column>
+                    <p:column filterBy="#{aClientes.fenacnew}" headerText="fechaNacNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.fenacnew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.telefononew}" headerText="TelefonoNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.telefononew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.emailnew}" headerText="EmailNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.emailnew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.usuarionew}" headerText="UsuarioNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.usuarionew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.passnew}" headerText="PassNew"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.passnew}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.usuario}" headerText="Usuario"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.usuario}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.modificado}" headerText="Modificado"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.modificado}" />
+                    </p:column>
+                    <p:column filterBy="#{aClientes.idCliente}" headerText="Id Cliente"  filterMatchMode="contains">
+                        <h:outputText value="#{aClientes.idCliente}" />
+                    </p:column>
+                </p:dataTable>
+                
+            </h:form>
+            
+        </h:body>
+
+    </f:view>
+</html>
+

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/05/2019 10:40:31 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Cliente" table="cliente" schema="public">
+        <id name="idCliente" type="int">
+            <column name="id_cliente" />
+            <generator class="native">
+                <param name="sequence">cliente_id_cliente_seq</param>
+            </generator>
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="apaterno" type="string">
+            <column name="apaterno" length="45" />
+        </property>
+        <property name="amaterno" type="string">
+            <column name="amaterno" length="45" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="500" />
+        </property>
+        <property name="fechaNacimiento" type="date">
+            <column name="fecha_nacimiento" length="13" />
+        </property>
+        <property name="telefono" type="java.lang.Long">
+            <column name="telefono" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="100" />
+        </property>
+        <property name="usuario" type="string">
+            <column name="usuario" length="45" />
+        </property>
+        <property name="pass" type="string">
+            <column name="pass" length="45" />
+        </property>
+        <set name="facturas" table="factura" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_cliente" />
+            </key>
+            <one-to-many class="model.Factura" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Lista Categoria</title>
+                <style type="text/css">
+                    body {
+                        background-image:url(./img/fondo.jpg);
+                    }
+                    .ui-datatable .ui-datatable-header {
+                        text-align: right !important;
+                    }
+
+                    .ui-button-text-only .ui-button-text {
+                        padding: 0.3em 0.4em;
+                    }
+
+                    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                        visibility: hidden;
+                    }
+
+                    .ui-filter-column .ui-column-customfilter .custom-filter {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .year-spinner input {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <h:form id="formTitulo">
+                <h:form>
+                    <img src="img/name.jpg" style="width: 100%; height: 150px;" />
+                    <p:panelGrid  columns="8"  columnClasses="label,value" style="width: 100%" >
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaProducto"  value="Alta Producto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCliente"  value="Alta Cliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCategoria"  value="Alta Categoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcategoria"  value="Lista Categoria" style="width:100%; color: greenyellow;"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGproducto"  value="Lista Producto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcliente"  value="Lista Cliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGfacturas"  value="Lista Factura" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGdetalle"  value="Lista Detalle" style="width:100%;"/>
+                        </p:panel>
+                         <p:panel style="width: 100%">
+                            <p:button outcome="listaGaCategoria"  value="Lista aCategoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaProducto"  value="Lista aProducto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaClientes"  value="Lista aCliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaFactura"  value="Lista aFactura" style="width:100%"/>
+                        </p:panel>
+                        
+                        <p:panel style="width: 100%">
+                            <p:button outcome="stock"  value="Stock" style="width:100%"/>
+                        </p:panel>
+                    </p:panelGrid>
+                </h:form>
+            </h:form> 
+            <h:form  id="formMostrar">
+            <p:growl id="growl"/> 
+            <!-- Tabla categorias -->
+            <p:dataTable var="categoria" value="#{categoriaBean.lista}" rows="10" widgetVar="prodTable" emptyMessage="No se encontraron categorias con los criterios dados"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">
+                    <div align="center">
+                        Lista General Categorias
+                    </div>
+                    <p:outputPanel>
+                        <h:outputText value="Buscar en todos los campos:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('prodTable').filter()" placeholder="Inserte palabra clave"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:column filterBy="#{categoria.idCategoria}" headerText="Id"  filterMatchMode="contains" width="10%">
+                    <h:outputText value="#{categoria.idCategoria}" />
+                </p:column>
+                <p:column filterBy="#{categoria.nombre}" headerText="Nombre"  filterMatchMode="contains">
+                    <h:outputText value="#{categoria.nombre}" />
+                </p:column>
+                <p:column filterBy="#{categoria.descripcion}" headerText="Descripcion"  filterMatchMode="contains">
+                    <h:outputText value="#{categoria.descripcion}" />
+                </p:column>
+                <!-- Accion editar -->
+                <p:column headerText="Editar" width="10%">
+                    <div align="center">
+                    <p:commandButton icon="ui-icon-pencil" iconPos="center"
+                                     onclick="PF('dlgmodificar').show();"
+                                     update=":formModificar">
+                        <f:setPropertyActionListener
+                            target="#{categoriaBean.categoria.idCategoria}"
+                            value="#{categoria.idCategoria}"/>
+                         <f:setPropertyActionListener
+                             target="#{categoriaBean.categoria.nombre}"
+                             value="#{categoria.nombre}"/>
+                          <f:setPropertyActionListener
+                              target="#{categoriaBean.categoria.descripcion}"
+                              value="#{categoria.descripcion}"/>
+                    </p:commandButton>
+                    </div>
+                </p:column>
+                <!-- Accion eliminar -->
+                <p:column headerText="Eliminar" width="10%">
+                    <div align="center">
+                    <p:commandButton icon="ui-icon-trash" iconPos="center"
+                                     onclick="PF('dlgeliminar').show();">
+                        <f:setPropertyActionListener
+                            target="#{categoriaBean.categoria}"
+                            value="#{categoria}"/>
+                    </p:commandButton>
+                    </div>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <!--Ventana editar categoria -->
+        <p:dialog id="dlg" header="Modificar Categoria"
+                  showEffect="explode" hideEffect="bounce"
+                  widgetVar="dlgmodificar" modal="true"
+                  resizable="false" minWidth="200">
+            <h:form id="formModificar">
+                <p:panel header="Modificar categoria">
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText  value="ID " />
+                        <p:inputText value="#{categoriaBean.categoria.idCategoria}" required="true" label="ID"/>
+                        <h:outputText  value="Nombre " />
+                        <p:inputText value="#{categoriaBean.categoria.nombre}" required="true" label="Nombre"/>
+                        <h:outputText  value="Descripcion " />
+                        <p:inputText value="#{categoriaBean.categoria.descripcion}" required="true" label="Descripcion"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Enviar" action="#{categoriaBean.actualizar()}"  update=":formMostrar" onclick="PF('dlgmodificar').hide();"/>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+        <!--Cuadro de dialogo eliminar -->
+        <p:dialog id="dlg2" header="Eliminar Categoria" 
+                  showEffect="explode" hideEffect="bounce"
+                  widgetVar="dlgeliminar" modal="true" 
+                  resizable="false" minWidth="200">
+            <h:form id="formEliminar">
+                <p:outputLabel value="¿Desea eliminar el registro?" />
+                <p:commandButton 
+                    actionListener="#{categoriaBean.eliminar()}" 
+                    value="Si" update=":formMostrar"
+                    onclick="PF('dlgeliminar').hide();"/>
+                <p:commandButton  value="No" 
+                                  onclick="PF('dlg2').hide();"/>
+            </h:form>
+        </p:dialog>
+        
+        
+            <div align="right">
+                <p:button outcome="altaCategoria" value="Añadir" style="margin-right:20px;"/>
+            </div>
+
+        </h:body>
+
+    </f:view>
+</html>

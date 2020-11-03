@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Lista Cliente</title>
+                <style type="text/css">
+                    body {
+                        background-image:url(./img/fondo.jpg);
+                    }
+                    .ui-datatable .ui-datatable-header {
+                        text-align: right !important;
+                    }
+
+                    .ui-button-text-only .ui-button-text {
+                        padding: 0.3em 0.4em;
+                    }
+
+                    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                        visibility: hidden;
+                    }
+
+                    .ui-filter-column .ui-column-customfilter .custom-filter {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .year-spinner input {
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    </style>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <h:form id="formTitulo">
+                <h:form>
+                    <img src="img/name.jpg" style="width: 100%; height: 150px;" />
+                    <p:panelGrid  columns="8"  columnClasses="label,value" style="width: 100%" >
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaProducto"  value="Alta Producto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCliente"  value="Alta Cliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="altaCategoria"  value="Alta Categoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcategoria"  value="Lista Categoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGproducto"  value="Lista Producto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGcliente"  value="Lista Cliente" style="width:100%; color: greenyellow;"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGfacturas"  value="Lista Factura" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGdetalle"  value="Lista Detalle" style="width:100%;"/>
+                        </p:panel>
+                         <p:panel style="width: 100%">
+                            <p:button outcome="listaGaCategoria"  value="Lista aCategoria" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaProducto"  value="Lista aProducto" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaClientes"  value="Lista aCliente" style="width:100%"/>
+                        </p:panel>
+                        <p:panel style="width: 100%">
+                            <p:button outcome="listaGaFactura"  value="Lista aFactura" style="width:100%"/>
+                        </p:panel>
+                        
+                        <p:panel style="width: 100%">
+                            <p:button outcome="stock"  value="Stock" style="width:100%"/>
+                        </p:panel>
+                    </p:panelGrid>
+                </h:form>
+            </h:form> 
+            <h:form id="formMostrar">
+                <p:growl id="growl"/>
+                <!-- Tabla de clientes-->
+                <p:dataTable var="cliente" value="#{clienteBean.lista}" rows="10" widgetVar="clienTable" emptyMessage="No se encontraron clientes con los criterios dados"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <f:facet name="header">
+                        <div align="center">
+                            Lista General Clientes
+                        </div>
+                        <p:outputPanel>
+                            <h:outputText value="Buscar en todos los campos:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('clienTable').filter()" placeholder="Inserte palabra clave"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{cliente.idCliente}" headerText="Id"  filterMatchMode="contains" width="10%">
+                        <h:outputText value="#{cliente.idCliente}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.nombre}" headerText="Nombre"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.nombre}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.apaterno}" headerText="Apellido paterno"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.apaterno}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.amaterno}" headerText="Apellido materno"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.amaterno}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.direccion}" headerText="Direccion"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.direccion}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.fechaNacimiento}" headerText="Fecha de nacimiento" filterMatchMode="contains">
+                        <h:outputText value="#{cliente.fechaNacimiento}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.telefono}" headerText="Telefono"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.telefono}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.email}" headerText="Email"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.email}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.pass}" headerText="Password"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.pass}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.usuario}" headerText="Usuario"  filterMatchMode="contains">
+                        <h:outputText value="#{cliente.usuario}" />
+                    </p:column>
+                    <!-- Accion Editar -->
+                    <p:column headerText="Editar" style="width: 10%">
+                        <div align="center">
+                        <p:commandButton icon="ui-icon-pencil" iconPos="center"
+                                         onclick="PF('dlgmodificar').show();"
+                                         update=":formModificar">
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.idCliente}"
+                                value="#{cliente.idCliente}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.nombre}"
+                                value="#{cliente.nombre}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.apaterno}"
+                                value="#{cliente.apaterno}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.amaterno}"
+                                value="#{cliente.amaterno}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.direccion}"
+                                value="#{cliente.direccion}"/>
+                            
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.fechaNacimiento}"
+                                value="#{cliente.fechaNacimiento}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.telefono}"
+                                value="#{cliente.telefono}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.email}"
+                                value="#{cliente.email}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.pass}"
+                                value="#{cliente.pass}"/>
+                            
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente.usuario}"
+                                value="#{cliente.usuario}"/>
+                            
+                        </p:commandButton>
+                        </div>
+                    </p:column>
+                    <!-- Accion Eliminar -->
+                    <p:column headerText="Eliminar" style="width: 10%">
+                        <div align="center">
+                        <p:commandButton icon="ui-icon-trash" iconPos="center"
+                                         onclick="PF('dlgeliminar').show();">
+                            <f:setPropertyActionListener
+                                target="#{clienteBean.cliente}"
+                                value="#{cliente}"/>
+                        </p:commandButton>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Modificar cliente -->
+            <p:dialog id="dlg" header="Modificar Cliente"
+                      showEffect="explode" hideEffect="bounce"
+                      widgetVar="dlgmodificar" modal="true"
+                      resizable="false" minWidth="200">
+                <h:form id="formModificar">
+                    <p:panel header="Modificar cliente">
+                        <p:messages />
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText  value="ID " />
+                            <p:inputText value="#{clienteBean.cliente.idCliente}" required="true" label="ID"/>
+                            <h:outputText  value="Nombre " />
+                            <p:inputText value="#{clienteBean.cliente.nombre}" required="true" label="Nombre"/>
+                            <h:outputText  value="Apellido Paterno " />
+                            <p:inputText value="#{clienteBean.cliente.apaterno}" required="true" label="Descripcion"/>
+                            <h:outputText  value="Apellido Materno " />
+                            <p:inputText value="#{clienteBean.cliente.amaterno}" required="true" label="Descripcion"/>
+                            <h:outputText  value="Direccion " />
+                            <p:inputText value="#{clienteBean.cliente.direccion}" required="true" label="Descripcion"/>
+                            <h:outputText  value="Fecha Nacimiento" />
+                            <p:inputText value="#{clienteBean.fechaNacimiento}" required="true" label="Descripcion"/>
+                            <h:outputText  value="Telefono" />
+                            <p:inputText value="#{clienteBean.cliente.telefono}" required="true" label="Descripcion"/>
+                            <h:outputText  value="Correo" />
+                            <p:inputText value="#{clienteBean.cliente.email}" required="true" label="Descripcion"/>
+                            <h:outputText  value="Password" />
+                            <p:inputText value="#{clienteBean.cliente.pass}" required="true" label="Descripcion"/>
+                            <h:outputText  value="Usuario" />
+                            <p:inputText value="#{clienteBean.cliente.usuario}" required="true" label="Descripcion"/>
+                        </h:panelGrid>
+                        <p:commandButton value="Enviar" action="#{clienteBean.actualizar()}"  update=":formMostrar" onclick="PF('dlgmodificar').hide();"/>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+            <!-- Eliminar cliente -->
+            <p:dialog id="dlg2" header="Eliminar Cliente"
+                      showEffect="explode" hideEffect="bounce"
+                      widgetVar="dlgeliminar" modal="true"
+                      resizable="false" minWidth="200">
+                <h:form id="formEliminar">
+                    <p:outputLabel value="¿Desea eliminar el registro?" />
+                    <p:commandButton
+                        actionListener="#{clienteBean.eliminar()}"
+                        value="Si" update=":formMostrar"
+                        onclick="PF('dlgeliminar').hide();"/>
+                    <p:commandButton  value="No"
+                                      onclick="PF('dlg2').hide();"/>
+                </h:form>
+            </p:dialog>
+            
+            <div align="right">
+                <p:button outcome="altaCliente" value="Añadir" style="margin-right:20px;"/>
+            </div>
+        </h:body>
+
+    </f:view>
+</html>

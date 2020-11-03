@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27/05/2019 10:40:31 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Categoria" table="categoria" schema="public">
+        <id name="idCategoria" type="int">
+            <column name="id_categoria" />
+            <generator class="native">
+                <param name="sequence">categoria_id_categoria_seq</param>
+            </generator>
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="100" />
+        </property>
+        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_categoria" />
+            </key>
+            <one-to-many class="model.Producto" />
+        </set>
+    </class>
+</hibernate-mapping>
